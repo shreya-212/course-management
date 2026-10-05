@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Coursely — Modern course management platform. Learn your way.">
+    <title>Coursely — Learn Your Way</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Toast notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Confetti canvas (injected by JS on module completion) -->
+    <canvas id="confetti-canvas" class="hidden"></canvas>
+
+    <!-- ===== LOGIN ===== -->
+    <section id="login-page" class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">📘</div>
+                <h1>Coursely</h1>
+                <p class="subtitle">Sign in to continue learning</p>
+            </div>
+
+            <div id="login-success" class="success-msg"></div>
+
+            <form id="login-form" autocomplete="on">
+                <div class="input-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="you@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                        <button type="button" class="password-toggle" data-target="login-password" aria-label="Show password">👁</button>
+                    </div>
+                </div>
+                <div id="login-error" class="error-msg" role="alert"></div>
+                <button type="submit" class="btn btn-primary" id="login-btn">Sign In</button>
+            </form>
+
+            <p class="switch-text">
+                New to Coursely?
+                <a href="#" id="show-register">Create an account</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== REGISTER ===== -->
+    <section id="register-page" class="auth-page hidden">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">📘</div>
+                <h1>Join Coursely</h1>
+                <p class="subtitle">Start your learning journey</p>
+            </div>
+
+            <form id="register-form" autocomplete="on">
+                <div class="input-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" placeholder="e.g. Shreya Gupta" required>
+                </div>
+                <div class="input-group">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="reg-password">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-password" placeholder="Min 6 characters" required minlength="6" maxlength="72">
+                            <button type="button" class="password-toggle" data-target="reg-password" aria-label="Show password">👁</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-confirm">Confirm</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-confirm" placeholder="Re-enter" required minlength="6" maxlength="72">
+                            <button type="button" class="password-toggle" data-target="reg-confirm" aria-label="Show password">👁</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Role is assigned server-side (defaults to student) -->
+                <div id="register-error" class="error-msg" role="alert"></div>
+                <button type="submit" class="btn btn-primary" id="register-btn">Create Account</button>
+            </form>
+
+            <p class="switch-text">
+                Already on Coursely?
+                <a href="#" id="show-login">Sign in</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== DASHBOARD ===== -->
+    <section id="dashboard-page" class="hidden">
+
+        <header class="navbar">
+            <div class="navbar-inner">
+                <span class="nav-brand">
+                    <span class="nav-brand-icon">📘</span>
+                    Coursely
+                </span>
+                <div class="nav-right">
+                    <div class="nav-user">
+                        <div class="nav-user-avatar" id="nav-avatar">U</div>
+                        <div class="nav-user-info">
+                            <span class="nav-user-name" id="nav-username">User</span>
+                            <span class="nav-user-role" id="nav-role">student</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-logout" id="logout-btn">Sign Out</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+
+            <!-- Welcome banner -->
+            <div class="welcome-banner">
+                <h2 id="welcome-heading">Welcome back! 👋</h2>
+                <p id="welcome-subtext">Pick up where you left off and keep learning.</p>
+                <div class="welcome-meta">
+                    <div class="welcome-stat">
+                        <span class="welcome-stat-value" id="stat-role">Student</span>
+                        <span class="welcome-stat-label">Your Role</span>
+                    </div>
+                    <div class="welcome-stat">
+                        <span class="welcome-stat-value">3 / 8</span>
+                        <span class="welcome-stat-label">Lessons Done</span>
+                    </div>
+                    <div class="welcome-stat">
+                        <span class="welcome-stat-value">37%</span>
+                        <span class="welcome-stat-label">Progress</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon amber">📚</div>
+                    <div class="stat-info">
+                        <span class="stat-value">4</span>
+                        <span class="stat-label">Courses</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue">📝</div>
+                    <div class="stat-info">
+                        <span class="stat-value">12</span>
+                        <span class="stat-label">Lessons</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">✅</div>
+                    <div class="stat-info">
+                        <span class="stat-value">3</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon coral">🔥</div>
+                    <div class="stat-info">
+                        <span class="stat-value">5</span>
+                        <span class="stat-label">Day Streak</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-column: Trail Map + Quick Actions -->
+            <div class="section-grid">
+
+                <!-- TRAIL MAP — lesson waypoints -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">Learning Trail</h3>
+                            <p class="card-subtitle">Web Development Fundamentals</p>
+                        </div>
+                    </div>
+                    <div class="trail-map" id="trail-map">
+                        <div class="trail-node completed">
+                            <div class="trail-dot">✓</div>
+                            <div class="trail-info">
+                                <span class="trail-title">HTML Foundations</span>
+                                <span class="trail-desc">Structure, tags, semantic elements</span>
+                                <span class="trail-badge done">Completed</span>
+                            </div>
+                        </div>
+                        <div class="trail-node completed">
+                            <div class="trail-dot">✓</div>
+                            <div class="trail-info">
+                                <span class="trail-title">CSS & Layout</span>
+                                <span class="trail-desc">Flexbox, Grid, responsive design</span>
+                                <span class="trail-badge done">Completed</span>
+                            </div>
+                        </div>
+                        <div class="trail-node completed">
+                            <div class="trail-dot">✓</div>
+                            <div class="trail-info">
+                                <span class="trail-title">JavaScript Basics</span>
+                                <span class="trail-desc">Variables, functions, DOM</span>
+                                <span class="trail-badge done">Completed</span>
+                            </div>
+                        </div>
+                        <div class="trail-node active">
+                            <div class="trail-dot">▶</div>
+                            <div class="trail-info">
+                                <span class="trail-title">APIs & Fetch</span>
+                                <span class="trail-desc">REST, async/await, JSON</span>
+                                <span class="trail-badge current">In Progress</span>
+                            </div>
+                        </div>
+                        <div class="trail-node locked">
+                            <div class="trail-dot">🔒</div>
+                            <div class="trail-info">
+                                <span class="trail-title">React Fundamentals</span>
+                                <span class="trail-desc">Components, state, props</span>
+                                <span class="trail-badge lock">Locked</span>
+                            </div>
+                        </div>
+                        <div class="trail-node locked">
+                            <div class="trail-dot">🔒</div>
+                            <div class="trail-info">
+                                <span class="trail-title">Backend with Python</span>
+                                <span class="trail-desc">FastAPI, databases, auth</span>
+                                <span class="trail-badge lock">Locked</span>
+                            </div>
+                        </div>
+                        <div class="trail-node locked">
+                            <div class="trail-dot">🔒</div>
+                            <div class="trail-info">
+                                <span class="trail-title">Deployment</span>
+                                <span class="trail-desc">Docker, CI/CD, cloud hosting</span>
+                                <span class="trail-badge lock">Locked</span>
+                            </div>
+                        </div>
+                        <div class="trail-node locked">
+                            <div class="trail-dot">🏆</div>
+                            <div class="trail-info">
+                                <span class="trail-title">Final Project</span>
+                                <span class="trail-desc">Build and ship a full-stack app</span>
+                                <span class="trail-badge lock">Locked</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right column: Actions + Activity -->
+                <div>
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Quick Actions</h3>
+                                <p class="card-subtitle">Jump back in</p>
+                            </div>
+                        </div>
+                        <div class="quick-actions">
+                            <button class="action-item" id="action-resume">
+                                <div class="action-icon amber">▶️</div>
+                                <div class="action-text">
+                                    <span class="action-title">Resume Lesson</span>
+                                    <span class="action-desc">APIs & Fetch — Chapter 2</span>
+                                </div>
+                                <span class="action-arrow">→</span>
+                            </button>
+                            <button class="action-item" id="action-browse">
+                                <div class="action-icon indigo">📖</div>
+                                <div class="action-text">
+                                    <span class="action-title">Browse Courses</span>
+                                    <span class="action-desc">Explore the catalog</span>
+                                </div>
+                                <span class="action-arrow">→</span>
+                            </button>
+                            <button class="action-item" id="action-schedule">
+                                <div class="action-icon green">📅</div>
+                                <div class="action-text">
+                                    <span class="action-title">My Schedule</span>
+                                    <span class="action-desc">Upcoming classes & deadlines</span>
+                                </div>
+                                <span class="action-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Activity Feed -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Activity</h3>
+                                <p class="card-subtitle">Recent events</p>
+                            </div>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-dot amber"></div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Completed <strong>JavaScript Basics</strong> 🎉</p>
+                                    <p class="activity-time">2 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-dot green"></div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Started <strong>APIs & Fetch</strong></p>
+                                    <p class="activity-time">1 hour ago</p>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-dot"></div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Earned a 5-day streak badge 🔥</p>
+                                    <p class="activity-time">Today</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Profile -->
+            <div class="card" id="profile-section">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Profile</h3>
+                        <p class="card-subtitle">Your account</p>
+                    </div>
+                </div>
+                <div class="profile-card">
+                    <div class="profile-avatar" id="profile-avatar">U</div>
+                    <div class="profile-info">
+                        <span class="profile-name" id="profile-name">User</span>
+                        <span class="profile-email" id="profile-email">user@example.com</span>
+                        <span class="profile-role student" id="profile-role">Student</span>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </section>
+
+    <script src="script.js?v=2"></script>
+</body>
+</html>

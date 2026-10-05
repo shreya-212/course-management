@@ -1,0 +1,1 @@
+# CourseCraft - Course Management Backend
